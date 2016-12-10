@@ -1,34 +1,52 @@
 <?php
 
-require_once ROOT.'/models/Category.php';
-require_once ROOT.'/models/Product.php';
+require_once ROOT . '/models/Category.php';
+require_once ROOT . '/models/Product.php';
+require_once ROOT . '/components/Pagination.php';
 
-class CatalogController{
-	
-	public function actionIndex(){
-		
-		$categories = array();
+/**
+ * Контроллер CatalogController
+ * Каталог товаров
+ */
+class CatalogController
+{
+
+    /**
+     * Action для страницы "Каталог товаров"
+     */
+    public function actionIndex()
+    {
+        // Список категорий для левого меню
         $categories = Category::getCategoriesList();
-        
-        $latestProduct = array();
-        $latestProduct = Product::getLatestProducts(12);
-        
-        require_once ROOT.'/views/catalog/index.php';
-		
+
+        // Список последних товаров
+        $latestProducts = Product::getLatestProducts(12);
+
+        // Подключаем вид
+        require_once(ROOT . '/views/catalog/index.php');
         return true;
-	}
-	
-	public function actionCategory($categoryId){
-		
-		$categories = array();
+    }
+
+    /**
+     * Action для страницы "Категория товаров"
+     */
+    public function actionCategory($categoryId, $page = 1)
+    {
+        // Список категорий для левого меню
         $categories = Category::getCategoriesList();
-        
-        $categoryProducts = array();
-        $categoryProducts = Product::getProductListByCategory($categoryId);
-        
-        require_once ROOT.'/views/catalog/category.php';
-		
+
+        // Список товаров в категории
+        $categoryProducts = Product::getProductsListByCategory($categoryId, $page);
+
+        // Общее количетсво товаров (необходимо для постраничной навигации)
+        $total = Product::getTotalProductsInCategory($categoryId);
+
+        // Создаем объект Pagination - постраничная навигация
+        $pagination = new Pagination($total, $page, Product::SHOW_BY_DEFAULT, 'page-');
+
+        // Подключаем вид
+        require_once(ROOT . '/views/catalog/category.php');
         return true;
-	}
-	
+    }
+
 }
