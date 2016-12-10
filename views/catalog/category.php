@@ -48,8 +48,7 @@ include ROOT . '/views/layouts/header.php';
                             </div>
                         </div>
 
-                    <?php endforeach; ?>
-                    
+                    <?php endforeach; ?>                    
 
                 </div><!--features_items-->  
 
