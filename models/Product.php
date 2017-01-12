@@ -8,7 +8,7 @@
 
 class Product {
 
-    const SHOW_BY_DEFAULT = 6;
+    const SHOW_BY_DEFAULT = 5;
 
     public static function getLatestProducts($count = self::SHOW_BY_DEFAULT) {
         $count = intval($count);
